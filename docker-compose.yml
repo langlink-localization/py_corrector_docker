@@ -1,12 +1,13 @@
-version: "3"
+version: "3.8"
 
 services:
   app:
-    build: .
+    container_name: py_corrector_server
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "5001:5001"
     volumes:
       - .:/app
-    environment:
-      - FLASK_ENV=development
-    command: uwsgi --ini uwsgi.ini
+    restart: always
