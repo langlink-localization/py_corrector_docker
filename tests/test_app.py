@@ -61,6 +61,16 @@ class CorrectEndpointTest(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.model.correct_batch.assert_not_called()
 
+    def test_non_json_requests_keep_400_json_error(self):
+        for content_type in (None, "text/plain", "application/x-www-form-urlencoded"):
+            with self.subTest(content_type=content_type):
+                response = self.client.post(
+                    "/correct", data='{"text":"中文"}', content_type=content_type
+                )
+                self.assertEqual(response.status_code, 400)
+                self.assertEqual(response.get_json(), {"error": "No text provided"})
+        self.model.correct_batch.assert_not_called()
+
     def test_endpoint_remains_post_only(self):
         self.assertEqual(self.client.get("/correct").status_code, 405)
         self.model.correct_batch.assert_not_called()

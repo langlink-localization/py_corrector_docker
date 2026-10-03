@@ -24,7 +24,7 @@ if not app.debug:
 
 @app.route('/correct', methods=['POST'])
 def correct_text():
-    data = request.get_json()
+    data = request.get_json() if request.is_json else None
     if not data or 'text' not in data:
         app.logger.error('No text provided')
         return jsonify({'error': 'No text provided'}), 400
