@@ -5,7 +5,7 @@ from pycorrector import MacBertCorrector
 import json
 
 app = Flask(__name__)
-app.config['JSON_AS_ASCII'] = False
+app.json.ensure_ascii = False
 
 # 加载预训练模型
 m = MacBertCorrector('shibing624/macbert4csc-base-chinese')
